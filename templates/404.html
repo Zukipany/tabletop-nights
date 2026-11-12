@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+    <div class="text-center py-5">
+        <div class="display-1 fw-bold" style="color: var(--tt-accent)"><i class="bi bi-dice-1"></i> 404</div>
+        <h2 class="mb-3">You rolled a one!</h2>
+        <p class="text-muted">The page you are looking for is not on the board.</p>
+        <a href="{% url 'home' %}" class="btn btn-accent mt-2">Back to Home</a>
+    </div>
+{% endblock %}
