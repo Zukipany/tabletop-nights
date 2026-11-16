@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Delete {{ game.name }}{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card p-4 border-danger">
+                <h1 class="h3 text-danger">Delete “{{ game.name }}”?</h1>
+                <p>This removes the game from the shelf and from every game night it was planned for. This cannot be undone.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include 'partials/form_fields.html' %}
+                    <button type="submit" class="btn btn-danger">Yes, delete</button>
+                    <a href="{{ game.get_absolute_url }}" class="btn btn-link">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

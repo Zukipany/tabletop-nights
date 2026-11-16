@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Game shelf{% endblock %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"><i class="bi bi-boxes"></i> Game shelf</h1>
+        <a href="{% url 'game-create' %}" class="btn btn-accent"><i class="bi bi-plus-lg"></i> Add game</a>
+    </div>
+
+    <form method="get" class="card card-body mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-5">{{ filter_form.q }}</div>
+            <div class="col-md-3">{{ filter_form.category }}</div>
+            <div class="col-md-3">{{ filter_form.sort }}</div>
+            <div class="col-md-1 d-grid"><button class="btn btn-accent" type="submit"><i class="bi bi-search"></i></button></div>
+        </div>
+    </form>
+
+    <p class="text-muted small">{{ paginator.count }} game{{ paginator.count|pluralize }} found</p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+        {% for game in games %}
+            <div class="col">{% include 'partials/game_card.html' %}</div>
+        {% empty %}
+            <div class="col-12"><div class="alert alert-light">No games yet. <a href="{% url 'game-create' %}">Add the first one!</a></div></div>
+        {% endfor %}
+    </div>
+    {% include 'partials/pagination.html' %}
+{% endblock %}
