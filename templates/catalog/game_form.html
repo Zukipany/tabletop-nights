@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{% if game %}Edit {{ game.name }}{% else %}Add a game{% endif %}{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card p-4">
+                <h1 class="h3 mb-3">{% if game %}Edit “{{ game.name }}”{% else %}Add a game to the shelf{% endif %}</h1>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% include 'partials/form_fields.html' %}
+                    <button type="submit" class="btn btn-accent">Save</button>
+                    <a href="{% if game %}{{ game.get_absolute_url }}{% else %}{% url 'game-list' %}{% endif %}" class="btn btn-link">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

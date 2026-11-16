@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load tabletop_extras %}
+{% block title %}{{ game.name }}{% endblock %}
+{% block content %}
+    <div class="card p-4">
+        <div class="row g-4">
+            {% if game.image_url %}
+                <div class="col-md-4"><img src="{{ game.image_url }}" alt="{{ game.name }}" class="img-fluid rounded"></div>
+            {% endif %}
+            <div class="col">
+                <span class="badge text-bg-light">{{ game.get_category_display }}</span>
+                <h1 class="h2 mt-2">{{ game.name }}</h1>
+                <p class="text-muted">{{ game.description|default:"No description yet."|linebreaksbr }}</p>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-people"></i> {{ game.player_range }}</li>
+                    <li><i class="bi bi-clock"></i> {{ game.playtime_minutes|duration }}</li>
+                    <li><i class="bi bi-puzzle"></i> Complexity: <span class="text-warning">{{ game.complexity|stars }}</span> ({{ game.get_complexity_display }})</li>
+                    <li class="text-muted small mt-2">Added {{ game.created_at|timesince }} ago</li>
+                </ul>
+                <a href="{% url 'game-edit' game.pk %}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Edit</a>
+                <a href="{% url 'game-delete' game.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
+                <a href="{% url 'game-list' %}" class="btn btn-link">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

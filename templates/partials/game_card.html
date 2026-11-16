@@ -1,0 +1,18 @@
+{% load tabletop_extras %}
+<div class="card card-hover h-100">
+    {% if game.image_url %}
+        <img src="{{ game.image_url }}" class="card-img-top" alt="{{ game.name }}" style="height: 160px; object-fit: cover;">
+    {% endif %}
+    <div class="card-body">
+        <span class="badge text-bg-light mb-2">{{ game.get_category_display }}</span>
+        <h5 class="card-title">{{ game.name }}</h5>
+        <p class="card-text text-muted small">{{ game.description|default:"No description yet."|truncatewords:15 }}</p>
+        <div class="d-flex justify-content-between small">
+            <span><i class="bi bi-people"></i> {{ game.player_range }}</span>
+            <span><i class="bi bi-clock"></i> {{ game.playtime_minutes|duration }}</span>
+        </div>
+    </div>
+    <div class="card-footer bg-transparent border-0">
+        <a href="{{ game.get_absolute_url }}" class="btn btn-sm btn-outline-secondary w-100">Details</a>
+    </div>
+</div>
