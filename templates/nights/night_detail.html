@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load tabletop_extras %}
+{% block title %}{{ night.title }}{% endblock %}
+{% block content %}
+    <div class="card p-4">
+        <span class="badge {% if night.is_upcoming %}text-bg-success{% else %}text-bg-secondary{% endif %} align-self-start">
+            {% if night.is_upcoming %}Upcoming{% else %}Played{% endif %}
+        </span>
+        <h1 class="h2 mt-2">{{ night.title }}</h1>
+        <p class="text-muted">
+            <i class="bi bi-calendar"></i> {{ night.starts_at|date:"l, d F Y · H:i" }}<br>
+            <i class="bi bi-geo-alt"></i> {{ night.location }}
+        </p>
+
+        <h2 class="h5 mt-3">Seats: {{ night.total_players }} / {{ night.max_seats }}</h2>
+        <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar" style="width: {% widthratio night.total_players night.max_seats 100 %}%; background: var(--tt-accent);"></div>
+        </div>
+        <p class="small text-muted">{{ night.seats_left }} seat{{ night.seats_left|pluralize }} left</p>
+
+        <h2 class="h5">Host</h2>
+        <div>{% include 'partials/player_badge.html' with player=night.host %}</div>
+
+        <h2 class="h5 mt-2">Players</h2>
+        <div>
+            {% for player in night.attendees.all %}{% include 'partials/player_badge.html' %}{% empty %}<p class="text-muted">Only the host so far.</p>{% endfor %}
+        </div>
+
+        <h2 class="h5 mt-2">Games</h2>
+        <ul>
+            {% for game in night.games.all %}
+                <li><a href="{{ game.get_absolute_url }}">{{ game.name }}</a> <span class="text-muted small">· {{ game.playtime_minutes|duration }}</span></li>
+            {% endfor %}
+        </ul>
+        {% if night.notes %}<p class="fst-italic">“{{ night.notes }}”</p>{% endif %}
+
+        <div>
+            <a href="{% url 'night-edit' night.pk %}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Edit</a>
+            <a href="{% url 'night-delete' night.pk %}" class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Cancel night</a>
+            <a href="{% url 'night-list' %}" class="btn btn-link">All game nights</a>
+        </div>
+    </div>
+{% endblock %}

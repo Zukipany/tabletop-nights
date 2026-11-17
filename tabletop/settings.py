@@ -22,6 +22,8 @@ INSTALLED_APPS = [
 
     'common',
     'catalog',
+    'players',
+    'nights',
 ]
 
 MIDDLEWARE = [

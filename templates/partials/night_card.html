@@ -1,0 +1,16 @@
+<div class="card card-hover h-100">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <span class="badge {% if night.is_upcoming %}text-bg-success{% else %}text-bg-secondary{% endif %}">
+                {% if night.is_upcoming %}in {{ night.starts_at|timeuntil }}{% else %}{{ night.starts_at|timesince }} ago{% endif %}
+            </span>
+            <small class="text-muted">{{ night.starts_at|date:"D, d M · H:i" }}</small>
+        </div>
+        <h5 class="card-title mt-2">{{ night.title }}</h5>
+        <p class="small text-muted mb-2"><i class="bi bi-geo-alt"></i> {{ night.location }} · hosted by {{ night.host }}</p>
+        <p class="small mb-0"><i class="bi bi-boxes"></i> {{ night.games.all|join:", " }}</p>
+    </div>
+    <div class="card-footer bg-transparent border-0">
+        <a href="{{ night.get_absolute_url }}" class="btn btn-sm btn-outline-secondary w-100">Details</a>
+    </div>
+</div>
