@@ -34,3 +34,15 @@ def url_replace(context, **kwargs):
     for key, value in kwargs.items():
         params[key] = value
     return params.urlencode()
+
+
+@register.inclusion_tag('partials/stat_tile.html')
+def stat_tile(label, value, icon='dice-5'):
+    """Renders one statistic tile on the home page."""
+    return {'label': label, 'value': value, 'icon': icon}
+
+
+@register.filter
+def get_item(mapping, key):
+    """Looks up a dictionary key that contains spaces: {{ stats|get_item:'Game nights' }}."""
+    return mapping.get(key, '') if hasattr(mapping, 'get') else ''
