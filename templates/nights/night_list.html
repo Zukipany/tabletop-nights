@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Game nights{% endblock %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"><i class="bi bi-calendar-event"></i> Game nights</h1>
+        <a href="{% url 'night-create' %}" class="btn btn-accent"><i class="bi bi-calendar-plus"></i> Plan a night</a>
+    </div>
+
+    <form method="get" class="card card-body mb-4">
+        <div class="row g-2">
+            <div class="col-md-7">{{ filter_form.q }}</div>
+            <div class="col-md-4">{{ filter_form.when }}</div>
+            <div class="col-md-1 d-grid"><button class="btn btn-accent" type="submit"><i class="bi bi-search"></i></button></div>
+        </div>
+    </form>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for night in nights %}
+            <div class="col">{% include 'partials/night_card.html' %}</div>
+        {% empty %}
+            <div class="col-12"><div class="alert alert-light">No game nights here. <a href="{% url 'night-create' %}">Plan one!</a></div></div>
+        {% endfor %}
+    </div>
+    {% include 'partials/pagination.html' %}
+{% endblock %}

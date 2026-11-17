@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}{{ player.nickname }}{% endblock %}
+{% block content %}
+    <div class="card p-4">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold fs-4"
+                  style="width: 64px; height: 64px; background: var(--tt-accent);">{{ player.initials }}</span>
+            <div>
+                <h1 class="h3 mb-0">{{ player.nickname }}</h1>
+                <div class="text-muted">{{ player.full_name }} · {{ player.get_skill_level_display }} · joined {{ player.joined_on|date:"d M Y" }}</div>
+            </div>
+        </div>
+        <p>{{ player.bio|default:"No bio yet."|linebreaksbr }}</p>
+        <p><strong>Favourite game:</strong>
+            {% if player.favorite_game %}<a href="{{ player.favorite_game.get_absolute_url }}">{{ player.favorite_game }}</a>{% else %}—{% endif %}
+        </p>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <h2 class="h5">Hosting</h2>
+                <ul class="list-unstyled">
+                    {% for night in player.hosted_nights.all %}<li><a href="{{ night.get_absolute_url }}">{{ night }}</a></li>{% empty %}<li class="text-muted">Nothing yet.</li>{% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2 class="h5">Joining</h2>
+                <ul class="list-unstyled">
+                    {% for night in player.attended_nights.all %}<li><a href="{{ night.get_absolute_url }}">{{ night }}</a></li>{% empty %}<li class="text-muted">Nothing yet.</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div>
+            <a href="{% url 'player-edit' player.pk %}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Edit</a>
+            <a href="{% url 'player-delete' player.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
+            <a href="{% url 'player-list' %}" class="btn btn-link">All players</a>
+        </div>
+    </div>
+{% endblock %}

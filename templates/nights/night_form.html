@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{% if night %}Edit {{ night.title }}{% else %}Plan a game night{% endif %}{% endblock %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card p-4">
+                <h1 class="h3 mb-3">{% if night %}Edit “{{ night.title }}”{% else %}Plan a game night{% endif %}</h1>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% include 'partials/form_fields.html' %}
+                    <button type="submit" class="btn btn-accent">Save</button>
+                    <a href="{% if night %}{{ night.get_absolute_url }}{% else %}{% url 'night-list' %}{% endif %}" class="btn btn-link">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
