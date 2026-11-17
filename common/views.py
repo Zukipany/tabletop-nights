@@ -1,8 +1,27 @@
+from django.db.models import Count
 from django.views.generic import TemplateView
+
+from catalog.models import BoardGame
+from nights.models import GameNight
+from players.models import Player
 
 
 class HomeView(TemplateView):
     template_name = 'common/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'stats': {
+                'Games': BoardGame.objects.count(),
+                'Players': Player.objects.count(),
+                'Game nights': GameNight.objects.count(),
+            },
+            'upcoming_nights': GameNight.objects.upcoming().select_related('host').prefetch_related('games')[:3],
+            'popular_games': BoardGame.objects.annotate(nights=Count('game_nights')).filter(nights__gt=0).order_by('-nights')[:5],
+            'newest_games': BoardGame.objects.order_by('-created_at')[:3],
+        })
+        return context
 
 
 class FilteredListMixin:

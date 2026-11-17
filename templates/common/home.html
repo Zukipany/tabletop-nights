@@ -1,8 +1,55 @@
 {% extends 'base.html' %}
+{% load tabletop_extras %}
 {% block title %}Home{% endblock %}
 {% block content %}
     <section class="hero p-5 mb-4">
         <h1 class="display-5 fw-bold">Plan your next board game night</h1>
         <p class="lead text-muted">Keep a shelf of your games, a list of your players and organise game nights in one place.</p>
+        <a href="{% url 'night-create' %}" class="btn btn-accent btn-lg"><i class="bi bi-calendar-plus"></i> Plan a night</a>
+        <a href="{% url 'game-create' %}" class="btn btn-outline-secondary btn-lg">Add a game</a>
     </section>
+
+    <div class="row g-3 mb-5">
+        <div class="col-md-4">{% stat_tile 'Games on the shelf' stats.Games 'boxes' %}</div>
+        <div class="col-md-4">{% stat_tile 'Players' stats.Players 'people' %}</div>
+        <div class="col-md-4">{% stat_tile 'Game nights' stats|get_item:'Game nights' 'calendar-event' %}</div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Coming up</h2>
+        <a href="{% url 'night-list' %}">See all</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+        {% for night in upcoming_nights %}
+            <div class="col">{% include 'partials/night_card.html' %}</div>
+        {% empty %}
+            <div class="col-12"><div class="alert alert-light">Nothing planned yet. <a href="{% url 'night-create' %}">Plan the first night</a>.</div></div>
+        {% endfor %}
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <h2 class="h4 mb-3">Newest on the shelf</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+                {% for game in newest_games %}
+                    <div class="col">{% include 'partials/game_card.html' %}</div>
+                {% empty %}
+                    <div class="col-12"><div class="alert alert-light">The shelf is empty. <a href="{% url 'game-create' %}">Add a game</a>.</div></div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="h4 mb-3">Most played</h2>
+            <ol class="list-group list-group-numbered">
+                {% for game in popular_games %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <a href="{{ game.get_absolute_url }}" class="me-auto ms-2">{{ game.name }}</a>
+                        <span class="badge rounded-pill" style="background: var(--tt-accent);">{{ game.nights }}</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No games played yet.</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
 {% endblock %}
